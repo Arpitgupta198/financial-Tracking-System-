@@ -79,7 +79,7 @@ WSGI_APPLICATION = 'financial_system.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'finance',
+        'NAME': 'finance_Data',
         'USER': 'postgres',
         'PASSWORD': 'Arpit123',
         'HOST': 'localhost',
@@ -127,4 +127,11 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
+}
+
+# JWT Settings
+from datetime import timedelta
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
 }

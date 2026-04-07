@@ -1,7 +1,11 @@
 from .models import Transaction
 from django.db.models import Sum
+
 def get_user_transactions(user, filters=None):
-    qs = Transaction.objects.filter(user=user)
+    if user.role == 'ADMIN':
+        qs = Transaction.objects.all()
+    else:
+        qs = Transaction.objects.filter(user=user)
 
     if filters:
         if filters.get('type'):
@@ -17,7 +21,11 @@ def get_user_transactions(user, filters=None):
 
 
 def calculate_summary(user):
-    qs = Transaction.objects.filter(user=user)
+    # Admins get summary of all transactions, users get their own
+    if user.role == 'ADMIN':
+        qs = Transaction.objects.all()
+    else:
+        qs = Transaction.objects.filter(user=user)
 
     income = qs.filter(type='INCOME').aggregate(total=Sum('amount'))['total'] or 0
     expense = qs.filter(type='EXPENSE').aggregate(total=Sum('amount'))['total'] or 0
